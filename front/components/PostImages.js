@@ -4,7 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 
 import ImagesZoom from './ImagesZoom';
 
-const PostImages = ({ images }) => {
+function PostImages({ images }) {
   const [showImagesZoom, setShowImagesZoom] = useState(false);
 
   const onZoom = useCallback(() => {
@@ -27,20 +27,8 @@ const PostImages = ({ images }) => {
     return (
       <>
         <div>
-          <img
-            role="presentation"
-            src={images[0].src}
-            alt={images[0].src}
-            width="50%"
-            onClick={onZoom}
-          />
-          <img
-            role="presentation"
-            src={images[1].src}
-            alt={images[1].src}
-            width="50%"
-            onClick={onZoom}
-          />
+          <img role="presentation" src={images[0].src} alt={images[0].src} width="50%" onClick={onZoom} />
+          <img role="presentation" src={images[1].src} alt={images[1].src} width="50%" onClick={onZoom} />
         </div>
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
       </>
@@ -49,13 +37,7 @@ const PostImages = ({ images }) => {
   return (
     <>
       <div>
-        <img
-          role="presentation"
-          src={images[0].src}
-          alt={images[0].src}
-          width="50%"
-          onClick={onZoom}
-        />
+        <img role="presentation" src={images[0].src} alt={images[0].src} width="50%" onClick={onZoom} />
         <div
           role="presentation"
           style={{
@@ -75,7 +57,7 @@ const PostImages = ({ images }) => {
       {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
     </>
   );
-};
+}
 
 PostImages.propTypes = {
   images: PropTypes.arrayOf(

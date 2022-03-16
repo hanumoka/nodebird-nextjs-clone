@@ -2,13 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { Card, Button, Avatar, Popover, List, Comment } from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
-import {
-  EllipsisOutlined,
-  HeartOutlined,
-  HeartTwoTone,
-  MessageOutlined,
-  RetweetOutlined,
-} from '@ant-design/icons';
+import { EllipsisOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, RetweetOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import PostImages from './PostImages';
@@ -19,7 +13,7 @@ const CardWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
-const PostCard = ({ post }) => {
+function PostCard({ post }) {
   const id = useSelector((state) => state.user.me && state.user.me.id);
 
   const [liked, setLiked] = useState(false);
@@ -83,10 +77,8 @@ const PostCard = ({ post }) => {
                 <Comment
                   author={item.User.nickname}
                   avatar={
-                    <Link
-                      href={{ pathname: '/user', query: { id: item.User.id } }}
-                      as={`/user/${item.User.id}`}
-                    >
+                    <Link href={{ pathname: '/user', query: { id: item.User.id } }} as={`/user/${item.User.id}`}>
+                      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                       <a>
                         <Avatar>{item.User.nickname[0]}</Avatar>
                       </a>
@@ -101,15 +93,20 @@ const PostCard = ({ post }) => {
       )}
     </CardWrapper>
   );
-};
+}
 
 PostCard.propTypes = {
+  // eslint-disable-next-line react/require-default-props
   post: PropTypes.shape({
     id: PropTypes.number,
+    // eslint-disable-next-line react/forbid-prop-types
     User: PropTypes.object,
     content: PropTypes.string,
+    // eslint-disable-next-line react/forbid-prop-types
     createdAt: PropTypes.object,
+    // eslint-disable-next-line react/forbid-prop-types
     Comments: PropTypes.arrayOf(PropTypes.any),
+    // eslint-disable-next-line react/forbid-prop-types
     Images: PropTypes.arrayOf(PropTypes.any),
   }),
 };

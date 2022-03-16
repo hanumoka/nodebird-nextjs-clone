@@ -13,15 +13,15 @@ const FormWrapper = styled(Form)`
   padding: 10px;
 `;
 
-const LoginForm = () => {
+function LoginForm() {
   const dispatch = useDispatch();
-  const { isLoggingIn } = useSelector((state) => state.user);
-  const [id, setId] = useState('');
+  const { loginLoading } = useSelector((state) => state.user);
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   // const [passwordCheck, setPasswordCheck]= useState('');
 
-  const onChangeId = useCallback((e) => {
-    setId(e.target.value);
+  const onChangeEmail = useCallback((e) => {
+    setEmail(e.target.value);
   }, []);
 
   const onChangePassword = useCallback((e) => {
@@ -29,32 +29,27 @@ const LoginForm = () => {
   }, []);
 
   const onSubmitForm = useCallback(() => {
-    dispatch(loginRequestAction({ id, password }));
-  }, [id, password]);
+    dispatch(loginRequestAction({ id: email, password }));
+  }, [email, password]);
 
   return (
     <FormWrapper onFinish={onSubmitForm}>
       <div>
-        <label htmlFor="user-id">아이디</label>
+        <label htmlFor="user-email">이메일</label>
         <br />
-        <Input name="user-id" value={id} onChange={onChangeId} required />
+        <Input name="user-email" type="email" value={email} onChange={onChangeEmail} required />
       </div>
       <div>
         <label htmlFor="user-password">비밀번호</label>
         <br />
-        <Input
-          type="password"
-          name="user-password"
-          value={password}
-          onChange={onChangePassword}
-          required
-        />
+        <Input type="password" name="user-password" value={password} onChange={onChangePassword} required />
       </div>
       <ButtonWrapper>
-        <Button type="primary" htmlType="submit" loading={isLoggingIn}>
+        <Button type="primary" htmlType="submit" loading={loginLoading}>
           로그인
         </Button>
         <Link href="/signup">
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <a>
             <Button>회원가입</Button>
           </a>
@@ -62,6 +57,6 @@ const LoginForm = () => {
       </ButtonWrapper>
     </FormWrapper>
   );
-};
+}
 
 export default LoginForm;
