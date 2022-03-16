@@ -18,7 +18,7 @@ function PostForm() {
 
   const onSubmit = useCallback(() => {
     dispatch(addPost(text));
-  }, [text]);
+  }, [dispatch, text]);
 
   const onChangeText = useCallback((e) => {
     setText(e.target.value);

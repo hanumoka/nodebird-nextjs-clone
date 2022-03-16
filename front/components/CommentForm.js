@@ -7,7 +7,7 @@ import { ADD_COMMENT_REQUEST } from '../reducers/post';
 function CommentForm({ post }) {
   const dispatch = useDispatch();
   const id = useSelector((state) => state.user.me?.id);
-  const { addCommentDone } = useSelector((state) => state.post);
+  const { addCommentDone, addCommentLoading } = useSelector((state) => state.post);
   const [commentText, setCommentText] = useState('');
 
   useEffect(() => {
@@ -32,7 +32,17 @@ function CommentForm({ post }) {
     <Form onFinish={onSubmitComment}>
       <Form.Item style={{ position: 'relative', margin: 0 }}>
         <Input.TextArea rows={4} value={commentText} onChange={onChangeCommentText} />
-        <Button type="primary" htmlType="submit">
+        <Button
+          style={{
+            position: 'absolute',
+            right: 0,
+            bottom: -40,
+            zIndex: 1,
+          }}
+          type="primary"
+          htmlType="submit"
+          loading={addCommentLoading}
+        >
           삐약
         </Button>
         {/* <Button type="primary" htmlType="submit" loading={false}> */}

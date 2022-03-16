@@ -1,3 +1,5 @@
+import shortId from 'shortid';
+
 export const initialState = {
   mainPosts: [
     {
@@ -61,20 +63,29 @@ export const addComment = (data) => ({
   data,
 });
 
-const dummyPost = {
-  id: 2,
-  content: '더미데이터입니다.',
+const dummyPost = (data) => ({
+  id: shortId.generate(),
+  content: data,
   User: {
     id: 1,
     nickname: '하누모카',
   },
   Images: [],
   Comments: [],
-};
+});
+
+const dummyComment = (data) => ({
+  id: shortId.generate(),
+  content: data,
+  User: {
+    id: 1,
+    nickname: '하누모카',
+  },
+});
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case ADD_POST_SUCCESS: {
+    case ADD_POST_REQUEST: {
       return {
         ...state,
         addPostLoading: true,
@@ -82,10 +93,10 @@ export default (state = initialState, action) => {
         addPostError: null,
       };
     }
-    case ADD_POST_REQUEST: {
+    case ADD_POST_SUCCESS: {
       return {
         ...state,
-        mainPosts: [dummyPost, ...state.mainPosts],
+        mainPosts: [dummyPost(action.data), ...state.mainPosts],
         addPostLoading: false,
         addPostDone: true,
       };
@@ -97,7 +108,7 @@ export default (state = initialState, action) => {
         addPostError: action.error,
       };
     }
-    case ADD_COMMENT_SUCCESS: {
+    case ADD_COMMENT_REQUEST: {
       return {
         ...state,
         addCommentLoading: true,
@@ -105,9 +116,16 @@ export default (state = initialState, action) => {
         addCommentError: null,
       };
     }
-    case ADD_COMMENT_REQUEST: {
+    case ADD_COMMENT_SUCCESS: {
+      const postIndex = state.mainPosts.findIndex((v) => v.id === action.data.postId);
+      const post = { ...state.mainPosts[postIndex] };
+      post.Comments = [dummyComment(action.data.content), ...post.Comments];
+      const mainPosts = [...state.mainPosts];
+      mainPosts[postIndex] = post;
+
       return {
         ...state,
+        mainPosts,
         addCommentLoading: false,
         addCommentDone: true,
       };
