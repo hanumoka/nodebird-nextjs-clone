@@ -27,7 +27,7 @@ const Global = createGlobalStyle`
   }
 `;
 
-const AppLayout = ({ children }) => {
+function AppLayout({ children }) {
   const { me } = useSelector((state) => state.user);
 
   return (
@@ -68,7 +68,7 @@ const AppLayout = ({ children }) => {
       </Row>
     </div>
   );
-};
+}
 
 AppLayout.propTypes = {
   children: PropTypes.node.isRequired,

@@ -38,5 +38,6 @@ module.exports = {
     'object-curly-newline': 'off',
     'linebreak-style': 'off',
     'no-param-reassign': 'off',
+    'default-param-last': 'off',
   },
 };
