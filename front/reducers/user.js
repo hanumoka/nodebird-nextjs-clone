@@ -1,3 +1,5 @@
+import produce from 'immer';
+
 const dummyUser = (data) => ({
   ...data,
   nickname: 'hanumoka',
@@ -80,121 +82,72 @@ export const signUp = (data) => {
 };
 
 export default (state = initialState, action) => {
-  switch (action.type) {
-    case LOG_IN_REQUEST: {
-      return {
-        ...state,
-        loginLoading: true,
-        loginError: null,
-        loginDone: false,
-      };
+  return produce(state, (draft) => {
+    switch (action.type) {
+      case LOG_IN_REQUEST:
+        draft.loginLoading = true;
+        draft.loginError = null;
+        draft.loginDone = false;
+        break;
+      case LOG_IN_SUCCESS:
+        draft.loginLoading = false;
+        draft.loginDone = true;
+        draft.me = dummyUser(action.data);
+        break;
+      case LOG_IN_FAILURE:
+        draft.loginLoading = false;
+        draft.loginDone = false;
+        draft.loginError = action.error;
+        break;
+      case LOG_OUT_REQUEST:
+        draft.logOutLoading = true;
+        draft.logOutError = null;
+        draft.logOutDone = false;
+        break;
+      case LOG_OUT_SUCCESS:
+        draft.logOutLoading = false;
+        draft.logOutDone = true;
+        draft.loginDone = false;
+        draft.me = null;
+        break;
+      case LOG_OUT_FAILURE:
+        draft.logOutLoading = false;
+        draft.logOutError = action.error;
+        break;
+      case SIGN_UP_REQUEST:
+        draft.signUpLoading = true;
+        draft.signUpError = null;
+        draft.signUpDone = false;
+        break;
+      case SIGN_UP_SUCCESS:
+        draft.signUpLoading = false;
+        draft.signUpDone = true;
+        break;
+      case SIGN_UP_FAILURE:
+        draft.signUpLoading = false;
+        draft.signUpError = action.error;
+        break;
+      case CHANGE_NICKNAME_REQUEST:
+        draft.changeNicknameLoading = false;
+        draft.changeNicknameError = null;
+        draft.changeNicknameDone = false;
+        break;
+      case CHANGE_NICKNAME_SUCCESS:
+        draft.changeNicknameLoading = false;
+        draft.changeNicknameDone = true;
+        break;
+      case CHANGE_NICKNAME_FAILURE:
+        draft.changeNicknameLoading = false;
+        draft.changeNicknameError = action.error;
+        break;
+      case ADD_POST_TO_ME:
+        draft.me.Posts.unshift({ id: action.data });
+        break;
+      case REMOVE_POST_OF_ME:
+        draft.me.Posts = draft.me.Posts.filter((v) => v.id !== action.data);
+        break;
+      default:
+        break;
     }
-    case LOG_IN_SUCCESS: {
-      return {
-        ...state,
-        loginLoading: false,
-        loginDone: true,
-        me: dummyUser(action.data),
-      };
-    }
-    case LOG_IN_FAILURE: {
-      return {
-        ...state,
-        loginLoading: false,
-        loginDone: false,
-        loginError: action.error,
-      };
-    }
-    case LOG_OUT_REQUEST: {
-      return {
-        ...state,
-        logOutLoading: true,
-        logOutError: null,
-        logOutDone: false,
-      };
-    }
-    case LOG_OUT_SUCCESS: {
-      return {
-        ...state,
-        logOutLoading: false,
-        logOutDone: true,
-        loginDone: false,
-        me: null,
-      };
-    }
-    case LOG_OUT_FAILURE: {
-      return {
-        ...state,
-        logOutLoading: false,
-        logOutError: action.error,
-      };
-    }
-    case SIGN_UP_REQUEST: {
-      return {
-        ...state,
-        signUpLoading: true,
-        signUpError: null,
-        signUpDone: false,
-      };
-    }
-    case SIGN_UP_SUCCESS: {
-      return {
-        ...state,
-        signUpLoading: false,
-        signUpDone: true,
-      };
-    }
-    case SIGN_UP_FAILURE: {
-      return {
-        ...state,
-        signUpLoading: false,
-        signUpError: action.error,
-      };
-    }
-    case CHANGE_NICKNAME_REQUEST: {
-      return {
-        ...state,
-        changeNicknameLoading: true,
-        changeNicknameError: null,
-        changeNicknameDone: false,
-      };
-    }
-    case CHANGE_NICKNAME_SUCCESS: {
-      return {
-        ...state,
-        changeNicknameLoading: false,
-        changeNicknameDone: true,
-      };
-    }
-    case CHANGE_NICKNAME_FAILURE: {
-      return {
-        ...state,
-        changeNicknameLoading: false,
-        changeNicknameError: action.error,
-      };
-    }
-    case ADD_POST_TO_ME: {
-      return {
-        ...state,
-        me: {
-          ...state.me,
-          Posts: [{ id: action.data }, ...state.me.Posts],
-        },
-      };
-    }
-    case REMOVE_POST_OF_ME: {
-      return {
-        ...state,
-        me: {
-          ...state.me,
-          Posts: state.me.Posts.filter((v) => v.id !== action.data),
-        },
-      };
-    }
-    default: {
-      return {
-        ...state,
-      };
-    }
-  }
+  });
 };

@@ -40,5 +40,6 @@ module.exports = {
     'no-param-reassign': 'off',
     'default-param-last': 'off',
     'no-template-curly-in-string': 'off',
+    'consistent-return': 'off',
   },
 };
