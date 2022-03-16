@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
-import { Card, Button, Avatar, Popover } from 'antd';
-// import Link from 'next/link';
+import { Card, Button, Avatar, Popover, List, Comment } from 'antd';
+import Link from 'next/link';
 import styled from 'styled-components';
 import {
   EllipsisOutlined,
@@ -12,6 +12,7 @@ import {
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import PostImages from './PostImages';
+import CommentForm from './CommentForm';
 
 const CardWrapper = styled.div`
   margin-bottom: 20px;
@@ -72,31 +73,30 @@ const PostCard = ({ post }) => {
       </Card>
       {commentFormOpened && (
         <>
-          댓글부분
-          {/*<CommentForm post={post} />*/}
-          {/*<List*/}
-          {/*  header={`${post.Comments.length} 댓글`}*/}
-          {/*  itemLayout="horizontal"*/}
-          {/*  dataSource={post.Comments}*/}
-          {/*  renderItem={(item) => (*/}
-          {/*    <li>*/}
-          {/*      <Comment*/}
-          {/*        author={item.User.nickname}*/}
-          {/*        avatar={*/}
-          {/*          <Link*/}
-          {/*            href={{ pathname: '/user', query: { id: item.User.id } }}*/}
-          {/*            as={`/user/${item.User.id}`}*/}
-          {/*          >*/}
-          {/*            <a>*/}
-          {/*              <Avatar>{item.User.nickname[0]}</Avatar>*/}
-          {/*            </a>*/}
-          {/*          </Link>*/}
-          {/*        }*/}
-          {/*        content={item.content}*/}
-          {/*      />*/}
-          {/*    </li>*/}
-          {/*  )}*/}
-          {/*/>*/}
+          <CommentForm post={post} />
+          <List
+            header={`${post.Comments.length} 댓글`}
+            itemLayout="horizontal"
+            dataSource={post.Comments}
+            renderItem={(item) => (
+              <li>
+                <Comment
+                  author={item.User.nickname}
+                  avatar={
+                    <Link
+                      href={{ pathname: '/user', query: { id: item.User.id } }}
+                      as={`/user/${item.User.id}`}
+                    >
+                      <a>
+                        <Avatar>{item.User.nickname[0]}</Avatar>
+                      </a>
+                    </Link>
+                  }
+                  content={item.content}
+                />
+              </li>
+            )}
+          />
         </>
       )}
     </CardWrapper>
