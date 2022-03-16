@@ -108,6 +108,7 @@ export default (state = initialState, action) => {
         ...state,
         logOutLoading: false,
         logOutDone: true,
+        loginDone: false,
         me: null,
       };
     }
