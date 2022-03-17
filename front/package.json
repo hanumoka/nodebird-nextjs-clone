@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@faker-js/faker": "^6.0.0",
     "antd": "^4.19.2",
     "axios": "^0.26.1",
     "immer": "^9.0.12",
