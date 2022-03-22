@@ -30,7 +30,7 @@ function LoginForm() {
 
   const onSubmitForm = useCallback(() => {
     dispatch(loginRequestAction({ id: email, password }));
-  }, [email, password]);
+  }, [dispatch, email, password]);
 
   return (
     <FormWrapper onFinish={onSubmitForm}>

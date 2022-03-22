@@ -4,7 +4,7 @@ import Head from 'next/head';
 import PropTypes from 'prop-types';
 import wrapper from '../store/configureStore';
 
-const App = ({Component}) =>{
+function App({ Component }) {
   return (
     <>
       <Head>
@@ -13,11 +13,11 @@ const App = ({Component}) =>{
       </Head>
       <Component />
     </>
-  )
-};
+  );
+}
 
 App.propTypes = {
-  Component: PropTypes.elementType.isRequired
-}
+  Component: PropTypes.elementType.isRequired,
+};
 
 export default wrapper.withRedux(App);
