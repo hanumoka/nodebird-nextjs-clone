@@ -71,8 +71,6 @@ function* signUp(action) {
     });
   } catch (err) {
     console.log(err);
-    console.log('11111');
-    console.dir(err);
     yield put({
       type: SIGN_UP_FAILURE,
       error: err.response.data,

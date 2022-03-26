@@ -12,15 +12,18 @@ router.post("/login", (req, res, next) => {
       next(err);
     }
     if (info) {
+      console.log(JSON.stringify(info));
       return res.status(401).send(info.reason);
     }
+
+    // passport login
     return req.login(user, async (loginErr) => {
       if (loginErr) {
         console.error(loginErr);
         return next(loginErr);
       }
 
-      return res.json(user);
+      return res.status(200).json(user);
     });
   })(req, res, next);
 });
@@ -48,6 +51,12 @@ router.post("/", async (req, res, next) => {
     console.error(error);
     next(error); // 500 error
   }
+});
+
+router.post("/user/logout", (req, res, next) => {
+  req.logout();
+  req.session.destroy();
+  res.send("ok");
 });
 
 module.exports = router;

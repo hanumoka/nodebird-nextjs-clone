@@ -29,7 +29,7 @@ function LoginForm() {
   }, []);
 
   const onSubmitForm = useCallback(() => {
-    dispatch(loginRequestAction({ id: email, password }));
+    dispatch(loginRequestAction({ email, password }));
   }, [dispatch, email, password]);
 
   return (
