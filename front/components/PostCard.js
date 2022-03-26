@@ -36,7 +36,7 @@ function PostCard({ post }) {
       type: REMOVE_POST_REQUEST,
       data: post.id,
     });
-  }, [dispatch]);
+  }, [dispatch, post.id]);
 
   return (
     <CardWrapper key={post.id}>
@@ -116,7 +116,7 @@ PostCard.propTypes = {
     User: PropTypes.object,
     content: PropTypes.string,
     // eslint-disable-next-line react/forbid-prop-types
-    createdAt: PropTypes.object,
+    createdAt: PropTypes.string,
     // eslint-disable-next-line react/forbid-prop-types
     Comments: PropTypes.arrayOf(PropTypes.any),
     // eslint-disable-next-line react/forbid-prop-types

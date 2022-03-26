@@ -24,7 +24,7 @@ function Home() {
   // FIXME: 인피니티스크롤 버그 존재, 스크롤시 2번 request 발생, SWR 같은것으로 대체 해야 할듯
   useEffect(() => {
     function onScroll() {
-      console.log(window.scrollY, document.documentElement.clientHeight, document.documentElement.scrollHeight);
+      // console.log(window.scrollY, document.documentElement.clientHeight, document.documentElement.scrollHeight);
       if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
         if (hasMorePosts && !loadPostsLoading) {
           dispatch({

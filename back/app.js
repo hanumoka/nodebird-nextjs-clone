@@ -3,8 +3,10 @@ const cors = require("cors");
 const session = require("express-session");
 const passport = require("passport");
 const dotenv = require("dotenv");
+const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const postRouter = require("./routes/post");
+const postsRouter = require("./routes/posts");
 const userRouter = require("./routes/user");
 const db = require("./models");
 const passportConfig = require("./passport");
@@ -20,6 +22,7 @@ db.sequelize
 
 passportConfig();
 
+app.use(morgan("dev")); // 백엔드에서 http 요청 응답을 콘솔에 출력한다.
 app.use(
   cors({
     origin: ["http://localhost:3060"],
@@ -46,15 +49,8 @@ app.get("/", (req, res) => {
   res.send("hello api");
 });
 
-app.get("/posts", (req, res) => {
-  res.json([
-    { id: 1, content: "hello" },
-    { id: 2, content: "hello2" },
-    { id: 3, content: "hello3" },
-  ]);
-});
-
 app.use("/post", postRouter);
+app.use("/posts", postsRouter);
 app.use("/user", userRouter);
 
 app.listen(3065, () => {
