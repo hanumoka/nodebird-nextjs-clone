@@ -17,11 +17,17 @@ import { SIGN_UP_REQUEST } from '../reducers/user';
 
 function Signup() {
   const dispatch = useDispatch();
-  const { signUpLoading, signUpDone, signUpError } = useSelector((state) => state.user);
+  const { signUpLoading, signUpDone, signUpError, me } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (me && me.id) {
+      Router.replace('/'); // push 는 뒤로가기가 가능하지만, replace 는 뒤로가기가 블가능 하다.
+    }
+  }, [me]);
 
   useEffect(() => {
     if (signUpDone) {
-      Router.push('/');
+      Router.replace('/');
     }
   }, [signUpDone]);
 

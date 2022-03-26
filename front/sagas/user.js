@@ -37,17 +37,15 @@ function* logIn(action) {
   }
 }
 
-function logOutApi(data) {
-  return axios.post('/user/logout', data);
+function logOutApi() {
+  return axios.post('/user/logout');
 }
 
-function* logout(action) {
+function* logout() {
   try {
-    yield delay(1000);
-    // const result = yield call(loginApi, action.data);
+    yield call(logOutApi);
     yield put({
       type: LOG_OUT_SUCCESS,
-      // data: result.data,
     });
   } catch (err) {
     yield put({

@@ -13,7 +13,7 @@ function Profile() {
     if (!(me && me.id)) {
       Router.push('/');
     }
-  }, []);
+  }, [me]);
 
   if (!me) {
     return null;
