@@ -22,7 +22,7 @@ router.post("/", async (req, res, next) => {
       nickname: req.body.nickname,
       password: hashedPassword,
     });
-    res.status(200).json("ok");
+    res.status(201).json("ok");
   } catch (error) {
     console.error(error);
     next(error); // 500 error

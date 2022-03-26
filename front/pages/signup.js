@@ -1,23 +1,35 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Head from 'next/head';
-import AppLayout from '../components/AppLayout';
-import PropTypes from 'prop-types';
-import useInput from '../hooks/useInput';
 import { Button, Checkbox, Form, Input } from 'antd';
-import { SIGN_UP_REQUEST } from '../reducers/user';
 import { useDispatch, useSelector } from 'react-redux';
+import Router from 'next/router';
+import AppLayout from '../components/AppLayout';
+import useInput from '../hooks/useInput';
+import { SIGN_UP_REQUEST } from '../reducers/user';
 
-const TextInput = ({ value }) => {
-  return <div>{value}</div>;
-};
+// function TextInput({ value }) {
+//   return <div>{value}</div>;
+// }
+//
+// TextInput.propTypes = {
+//   value: PropTypes.string,
+// };
 
-TextInput.propTypes = {
-  value: PropTypes.string,
-};
-
-const Signup = () => {
+function Signup() {
   const dispatch = useDispatch();
-  const { signUpLoading } = useSelector((state) => state.user);
+  const { signUpLoading, signUpDone, signUpError } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (signUpDone) {
+      Router.push('/');
+    }
+  }, [signUpDone]);
+
+  useEffect(() => {
+    if (signUpError) {
+      alert(signUpError);
+    }
+  }, [signUpError]);
 
   const [passwordCheck, setPasswordCheck] = useState('');
   const [term, setTerm] = useState(false);
@@ -74,13 +86,7 @@ const Signup = () => {
           <div>
             <label htmlFor="user-password">비밀번호</label>
             <br />
-            <Input
-              name="user-password"
-              type="password"
-              value={password}
-              required
-              onChange={onChangePassword}
-            />
+            <Input name="user-password" type="password" value={password} required onChange={onChangePassword} />
           </div>
           <div>
             <label htmlFor="user-password-check">비밀번호체크</label>
@@ -109,6 +115,6 @@ const Signup = () => {
       </AppLayout>
     </>
   );
-};
+}
 
 export default Signup;
