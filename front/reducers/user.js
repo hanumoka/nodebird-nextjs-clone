@@ -1,14 +1,5 @@
 import produce from 'immer';
 
-const dummyUser = (data) => ({
-  ...data,
-  nickname: 'hanumoka',
-  id: 1,
-  Posts: [{ id: 1 }],
-  Followings: [{ nickname: '닉' }, { nickname: '모티' }, { nickname: '베스' }],
-  Followers: [{ nickname: '닉' }, { nickname: '모티' }, { nickname: '베스' }],
-});
-
 export const initialState = {
   loadMyInfoLoading: false, // 유저정보 조회
   loadMyInfoDone: false,
@@ -188,6 +179,7 @@ export default (state = initialState, action) => {
         draft.changeNicknameDone = false;
         break;
       case CHANGE_NICKNAME_SUCCESS:
+        draft.me.nickname = action.data.nickname;
         draft.changeNicknameLoading = false;
         draft.changeNicknameDone = true;
         break;

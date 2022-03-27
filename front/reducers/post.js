@@ -116,7 +116,7 @@ export default (state = initialState, action) => {
       case ADD_POST_SUCCESS:
         draft.mainPosts.unshift(action.data);
         draft.addPostLoading = false;
-        draft.addPostDone = null;
+        draft.addPostDone = true;
         break;
       case ADD_POST_FAILURE:
         draft.addPostLoading = false;
@@ -128,7 +128,7 @@ export default (state = initialState, action) => {
         draft.removePostError = null;
         break;
       case REMOVE_POST_SUCCESS:
-        draft.mainPosts = draft.mainPosts.filter((v) => v.id !== action.data);
+        draft.mainPosts = draft.mainPosts.filter((v) => v.id !== action.data.PostId);
         draft.removePostLoading = false;
         draft.removePostDone = true;
         break;

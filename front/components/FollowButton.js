@@ -22,7 +22,7 @@ function FollowButton({ post }) {
     }
   }, [dispatch, isFollowing, post.User.id]);
 
-  if (!me || (me && post.User.id === me.id)) {
+  if (!me || post.User.id === me.id) {
     return null;
   }
   return (

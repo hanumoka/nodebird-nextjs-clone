@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addPost } from '../reducers/post';
 
 function PostForm() {
+  const [form] = Form.useForm();
   const dispatch = useDispatch();
   const imageInput = useRef();
 
@@ -13,8 +14,9 @@ function PostForm() {
   useEffect(() => {
     if (addPostDone) {
       setText('');
+      form.resetFields();
     }
-  }, [addPostDone]);
+  }, [addPostDone, form]);
 
   const onSubmit = useCallback(() => {
     dispatch(addPost(text));
@@ -26,10 +28,10 @@ function PostForm() {
 
   const onClickImageUpload = useCallback(() => {
     imageInput.current.click();
-  }, [imageInput.current]);
+  }, []);
 
   return (
-    <Form style={{ margin: '10px 0 20px' }} encType="multipart/form-data" onFinish={onSubmit}>
+    <Form form={form} style={{ margin: '10px 0 20px' }} encType="multipart/form-data" onFinish={onSubmit}>
       <Input.TextArea value={text} onChange={onChangeText} maxLength={140} placeholder="어떤 신기한 일이 있었나요?" />
       <div>
         <input type="file" multiple hidden ref={imageInput} />
