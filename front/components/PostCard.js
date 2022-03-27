@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import PostImages from './PostImages';
 import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
-import { REMOVE_POST_REQUEST } from '../reducers/post';
+import { LIKE_POST_REQUEST, REMOVE_POST_REQUEST, UNLIKE_POST_REQUEST } from '../reducers/post';
 import FollowButton from './FollowButton';
 
 const CardWrapper = styled.div`
@@ -18,14 +18,22 @@ const CardWrapper = styled.div`
 function PostCard({ post }) {
   const dispatch = useDispatch();
   const { removePostLoading } = useSelector((state) => state.post);
-  const id = useSelector((state) => state.user.me && state.user.me.id);
 
-  const [liked, setLiked] = useState(false);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
 
-  const onToggleLike = useCallback(() => {
-    setLiked((prev) => !prev);
-  }, []);
+  const onLike = useCallback(() => {
+    dispatch({
+      type: LIKE_POST_REQUEST,
+      data: post.id,
+    });
+  }, [dispatch, post.id]);
+
+  const onUnLike = useCallback(() => {
+    dispatch({
+      type: UNLIKE_POST_REQUEST,
+      data: post.id,
+    });
+  }, [dispatch, post.id]);
 
   const onToggleComment = useCallback(() => {
     setCommentFormOpened((prev) => !prev);
@@ -38,6 +46,9 @@ function PostCard({ post }) {
     });
   }, [dispatch, post.id]);
 
+  const id = useSelector((state) => state.user.me && state.user.me.id);
+  const liked = post.Likers.find((v) => v.id === id);
+
   return (
     <CardWrapper key={post.id}>
       <Card
@@ -45,9 +56,9 @@ function PostCard({ post }) {
         actions={[
           <RetweetOutlined key="retweet" />,
           liked ? (
-            <HeartTwoTone twoToneColor="#eb2f96" key="heart" onClick={onToggleLike} />
+            <HeartTwoTone twoToneColor="#eb2f96" key="heart" onClick={onUnLike} />
           ) : (
-            <HeartOutlined key="heart" onClick={onToggleLike} />
+            <HeartOutlined key="heart" onClick={onLike} />
           ),
           <MessageOutlined key="message" onClick={onToggleComment} />,
           <Popover
@@ -121,6 +132,7 @@ PostCard.propTypes = {
     Comments: PropTypes.arrayOf(PropTypes.any),
     // eslint-disable-next-line react/forbid-prop-types
     Images: PropTypes.arrayOf(PropTypes.any),
+    Likers: PropTypes.arrayOf(PropTypes.object),
   }),
 };
 
