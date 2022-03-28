@@ -5,6 +5,8 @@ import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
+import wrapper from '../store/configureStore';
+import { END } from 'redux-saga';
 
 function Home() {
   const { me } = useSelector((state) => state.user);
@@ -18,14 +20,14 @@ function Home() {
     }
   }, [retweetError]);
 
-  useEffect(() => {
-    dispatch({
-      type: LOAD_MY_INFO_REQUEST,
-    });
-    dispatch({
-      type: LOAD_POSTS_REQUEST,
-    });
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch({
+  //     type: LOAD_MY_INFO_REQUEST,
+  //   });
+  //   dispatch({
+  //     type: LOAD_POSTS_REQUEST,
+  //   });
+  // }, [dispatch]);
 
   // FIXME: 인피니티스크롤 버그 존재, 스크롤시 2번 request 발생, SWR 같은것으로 대체 해야 할듯
   useEffect(() => {
@@ -56,5 +58,18 @@ function Home() {
     </AppLayout>
   );
 }
+
+// 아래 부분이 home 보다 먼저 실행된다. (서버사이드 렌더링 요청)
+// home 보다 먼저 실행된다면, 파라미터 전달은 어떻게 하지?
+export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
+  context.store.dispatch({
+    type: LOAD_MY_INFO_REQUEST,
+  });
+  context.store.dispatch({
+    type: LOAD_POSTS_REQUEST,
+  });
+  context.store.dispatch(END);
+  await context.store.sagaTask.toPromise();
+});
 
 export default Home;
