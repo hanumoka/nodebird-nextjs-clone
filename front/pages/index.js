@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import AppLayout from '../components/AppLayout';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
@@ -60,8 +61,15 @@ function Home() {
 }
 
 // 아래 부분이 home 보다 먼저 실행된다. (서버사이드 렌더링 요청)
-// home 보다 먼저 실행된다면, 파라미터 전달은 어떻게 하지?
+// 프론트 서버에서 실행되는 부분
 export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
+  // front 서버가 백엔드 서버로 요청을 보낼때 쿠키를 삽입?
+  const cookie = context.req ? context.req.headers.cookie : '';
+  axios.defaults.headers.Cookie = '';
+  if (context.req && cookie) {
+    axios.defaults.headers.Cookie = cookie;
+  }
+
   context.store.dispatch({
     type: LOAD_MY_INFO_REQUEST,
   });
